@@ -1,3 +1,11 @@
+// not sure how this became something you can create with the `new GameManager` keyword, but it is one
+// In "application.js", this is called like
+//
+//   new GameManager(4, KeyboardInputManager, HTMLActuator, LocalStorageManager);
+//
+// Where each of these passed in things (no `new` keyword ?!) are defined in this directory
+// using snake_case_title.js
+//
 function GameManager(size, InputManager, Actuator, StorageManager) {
   this.size           = size; // Size of the grid
   this.inputManager   = new InputManager;

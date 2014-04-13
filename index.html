@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- The home screen -->
 <html>
 <head>
   <meta charset="utf-8">
@@ -33,6 +34,21 @@
 
     <div class="game-container">
       <div class="game-message">
+
+        <!-- by default has a
+                  .game-container .game-message { display: none }
+             so you can't see it
+             and a
+                   @include animation(fade-in 800ms ease $transition-speed * 12);
+            in "main.scss" with a
+                   @mixin animation($args...) {
+                      -webkit-animation: $args;
+                      -moz-animation: $args;
+                      animation: $args;
+                    }
+             in "helpers.scss" which means when the display type changes,
+             it fades into the new value over .8 sec -->
+
         <p></p>
         <div class="lower">
 	        <a class="keep-playing-button">Keep going</a>
@@ -94,6 +110,6 @@
   <script src="js/tile.js"></script>
   <script src="js/local_storage_manager.js"></script>
   <script src="js/game_manager.js"></script>
-  <script src="js/application.js"></script>
+  <script src="js/application.js"></script> <!-- intentionally last? -->
 </body>
 </html>
