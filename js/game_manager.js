@@ -3,17 +3,23 @@
 //
 //   new GameManager(4, KeyboardInputManager, HTMLActuator, LocalStorageManager);
 //
-// Where each of these passed in things (no `new` keyword ?!) are defined in this directory
+// Where each of these passed in things are defined in this directory
 // using snake_case_title.js
 //
 function GameManager(size, InputManager, Actuator, StorageManager) {
   this.size           = size; // Size of the grid
-  this.inputManager   = new InputManager;
+  this.inputManager   = new InputManager;  // create an instance of the InputManager type passed in
   this.storageManager = new StorageManager;
   this.actuator       = new Actuator;
 
   this.startTiles     = 2;
 
+  // * adds { event_name : callback_function } to the inputManager
+  // * I think we must bind the method to 'this' because the method is defined on the 'prototype',
+  //    so normally, using 'this' within the method would refer to the 'GameManager prototype object', when we
+  //    actually want it to refer to this particular 'GameManager instance'
+  // * So in sum, we're telling this GameManager instance's inputManager that when we move (etc.), it should
+  //    call the move method defined on the GameManager prototype, with the `this` keyword set to the instance.
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
@@ -141,6 +147,9 @@ GameManager.prototype.moveTile = function (tile, cell) {
 // Move tiles on the grid in the specified direction
 GameManager.prototype.move = function (direction) {
   // 0: up, 1: right, 2: down, 3: left
+
+  // we must save a 'this' pointer because 'this'
+  // will be re-bound in the forEach loop
   var self = this;
 
   if (this.isGameTerminated()) return; // Don't do anything if the game's over

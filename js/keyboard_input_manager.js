@@ -39,7 +39,7 @@ KeyboardInputManager.prototype.listen = function () {
     39: 1, // Right
     40: 2, // Down
     37: 3, // Left
-    75: 0, // Vim up
+    75: 0, // Vim up   <== what a G. never woulda guessedit
     76: 1, // Vim right
     74: 2, // Vim down
     72: 3, // Vim left
@@ -51,8 +51,13 @@ KeyboardInputManager.prototype.listen = function () {
 
   // Respond to direction keys
   document.addEventListener("keydown", function (event) {
-    var modifiers = event.altKey || event.ctrlKey || event.metaKey ||
-                    event.shiftKey;
+
+    // each of these happens [1] to be a bool, though we'd get a bool here regardless
+    // [1] : http://english.stackexchange.com/questions/12387/each-with-plural-or-singular-verb
+    var modifiers = event.altKey || event.ctrlKey || event.metaKey || event.shiftKey;
+
+    // event.which: the numeric charCode of the (alphanumeric) key pressed (in Unicode).
+    // So we're turning the key pressed into: "mapped" in [0,1,2,3]
     var mapped    = map[event.which];
 
     if (!modifiers) {
@@ -73,13 +78,14 @@ KeyboardInputManager.prototype.listen = function () {
   this.bindButtonPress(".restart-button", this.restart);
   this.bindButtonPress(".keep-playing-button", this.keepPlaying);
 
-  // Respond to swipe events
+  // Respond to swipe events (like for a tablet)
   var touchStartClientX, touchStartClientY;
   var gameContainer = document.getElementsByClassName("game-container")[0];
 
   gameContainer.addEventListener(this.eventTouchstart, function (event) {
-    if ((!window.navigator.msPointerEnabled && event.touches.length > 1) ||
-        event.targetTouches > 1) {
+    if (  (   !window.navigator.msPointerEnabled
+            && event.touches.length > 1)
+        || event.targetTouches > 1) {
       return; // Ignore if touching with more than 1 finger
     }
 
