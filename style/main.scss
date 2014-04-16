@@ -301,6 +301,10 @@ hr {
         &.tile-position-#{$x}-#{$y} {
           $xPos: floor(($tile-size + $grid-spacing) * ($x - 1));
           $yPos: floor(($tile-size + $grid-spacing) * ($y - 1));
+
+          // TODO   look-up this transform thing because I see it
+          // TODO   everywhere, and I think it rotates the element
+          // TODO   or something which is pretty cool
           @include transform(translate($xPos, $yPos));
         }
       }

@@ -1,6 +1,7 @@
 function KeyboardInputManager() {
     this.events = {};
 
+    // for handling touch events
     if (window.navigator.msPointerEnabled) {
         //Internet Explorer 10 style
         this.eventTouchstart = "MSPointerDown";
@@ -15,6 +16,7 @@ function KeyboardInputManager() {
     this.listen();
 }
 
+/** teach me how to dougie */
 KeyboardInputManager.prototype.on = function (event, callback) {
     if (!this.events[event]) {
         this.events[event] = [];
@@ -68,7 +70,7 @@ KeyboardInputManager.prototype.listen = function () {
         if (!modifiers) {
             if (mapped !== undefined) {
                 event.preventDefault();
-                self.emit("move", mapped);
+                self.emit("move", mapped); // roundaboutedly calls move() with the direction value
             }
         }
 
@@ -78,7 +80,7 @@ KeyboardInputManager.prototype.listen = function () {
         }
     });
 
-    // Respond to button presses
+    // Respond appropriately to user pressing each of the buttons on the screen
     this.bindButtonPress(".retry-button", this.restart);
     this.bindButtonPress(".restart-button", this.restart);
     this.bindButtonPress(".keep-playing-button", this.keepPlaying);
@@ -88,10 +90,12 @@ KeyboardInputManager.prototype.listen = function () {
     var gameContainer = document.getElementsByClassName("game-container")[0];
 
     gameContainer.addEventListener(this.eventTouchstart, function (event) {
+
+        // Ignore if touching with more than 1 finger
         if ((   !window.navigator.msPointerEnabled
             && event.touches.length > 1)
             || event.targetTouches > 1) {
-            return; // Ignore if touching with more than 1 finger
+            return
         }
 
         if (window.navigator.msPointerEnabled) {
@@ -149,7 +153,17 @@ KeyboardInputManager.prototype.keepPlaying = function (event) {
 };
 
 KeyboardInputManager.prototype.bindButtonPress = function (selector, fn) {
+
+    // select element using CSS-style selector
+    // this is like $(selector), only it returns an "element" object, rather than a jQuery object
     var button = document.querySelector(selector);
+
+    // addEventListener() is "more flexible than button.onclick" [MDN], bc
+    //   1) it allows you to register multiple handlers for an event
+    //   2) it can do stuff besides call a function? Maybe?
+    // basically it is meant to *replace* onclick, so, I dunno, it's better
     button.addEventListener("click", fn.bind(this));
+
+    // the touch device version of the "click" event
     button.addEventListener(this.eventTouchend, fn.bind(this));
 };

@@ -4,11 +4,11 @@
 @function exponent($base, $exponent) {
   // reset value
   $value: $base;
-  // positive intergers get multiplied
+  // positive integers get multiplied
   @if $exponent > 1 {
     @for $i from 2 through $exponent {
       $value: $value * $base; } }
-  // negitive intergers get divided. A number divided by itself is 1
+  // negative integers get divided. A number divided by itself is 1
   @if $exponent < 1 {
     @for $i from 0 through -$exponent {
       $value: $value / $base; } }

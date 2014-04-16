@@ -3,7 +3,7 @@ function Grid(size, previousState) {
     this.cells = previousState ? this.fromState(previousState) : this.empty();
 }
 
-// Build a grid of the specified size
+/** Build an empty grid of the specified size */
 Grid.prototype.empty = function () {
     var cells = [];
 
@@ -18,6 +18,7 @@ Grid.prototype.empty = function () {
     return cells;
 };
 
+/** make a copy of the given "state" Grid ? */
 Grid.prototype.fromState = function (state) {
     var cells = [];
 
@@ -33,7 +34,7 @@ Grid.prototype.fromState = function (state) {
     return cells;
 };
 
-// Find the first available random position
+/** If there are any empty Grid locations, return a random one of them */
 Grid.prototype.randomAvailableCell = function () {
     var cells = this.availableCells();
 
@@ -46,8 +47,8 @@ Grid.prototype.availableCells = function () {
     var cells = [];
 
     this.eachCell(function (x, y, tile) {
-        if (!tile) {
-            cells.push({ x: x, y: y });
+        if (!tile) {                    // if cell is `null`
+            cells.push({ x: x, y: y }); // save its location to array
         }
     });
 
@@ -78,11 +79,7 @@ Grid.prototype.cellOccupied = function (cell) {
 };
 
 Grid.prototype.cellContent = function (cell) {
-    if (this.withinBounds(cell)) {
-        return this.cells[cell.x][cell.y];
-    } else {
-        return null;
-    }
+    return this.withinBounds(cell) ? this.cells[cell.x][cell.y] : null;
 };
 
 // Inserts a tile at its position
@@ -99,6 +96,10 @@ Grid.prototype.withinBounds = function (position) {
         position.y >= 0 && position.y < this.size;
 };
 
+/**
+ * Serialize game board into
+ * { size: 4, cells: [ [ { position: { x: 0, y:0 }, value: 2}, null, null, ...], [null, ...] ] }
+ */
 Grid.prototype.serialize = function () {
     var cellState = [];
 

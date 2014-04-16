@@ -42,11 +42,7 @@ GameManager.prototype.keepPlaying = function () {
 
 // Return true if the game is lost, or has won and the user hasn't kept playing
 GameManager.prototype.isGameTerminated = function () {
-    if (this.over || (this.won && !this.keepPlaying)) {
-        return true;
-    } else {
-        return false;
-    }
+    return this.over || (this.won && !this.keepPlaying);
 };
 
 // Set up the game
@@ -132,6 +128,7 @@ GameManager.prototype.prepareTiles = function () {
     this.grid.eachCell(function (x, y, tile) {
         if (tile) {
             tile.mergedFrom = null;
+            // saves tile's position into tile.previousPosition
             tile.savePosition();
         }
     });
@@ -148,8 +145,7 @@ GameManager.prototype.moveTile = function (tile, cell) {
 GameManager.prototype.move = function (direction) {
     // 0: up, 1: right, 2: down, 3: left
 
-    // we must save a 'this' pointer because 'this'
-    // will be re-bound in the forEach loop
+    // 'this' will be re-bound in the forEach loop
     var self = this;
 
     if (this.isGameTerminated()) return; // Don't do anything if the game's over
@@ -187,7 +183,7 @@ GameManager.prototype.move = function (direction) {
                     // Update the score
                     self.score += merged.value;
 
-                    // The mighty 2048 tile
+                    // The mighty 2048 tile. Change this to actually win.
                     if (merged.value === 2048) self.won = true;
                 } else {
                     self.moveTile(tile, positions.farthest);
