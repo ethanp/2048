@@ -67,10 +67,11 @@ KeyboardInputManager.prototype.listen = function () {
         // So we're turning the key pressed into: "mapped" in [0,1,2,3]
         var mapped = map[event.which];
 
+        // call move() with the direction value
         if (!modifiers) {
             if (mapped !== undefined) {
                 event.preventDefault();
-                self.emit("move", mapped); // roundaboutedly calls move() with the direction value
+                self.emit("move", mapped);
             }
         }
 
@@ -114,9 +115,11 @@ KeyboardInputManager.prototype.listen = function () {
     });
 
     gameContainer.addEventListener(this.eventTouchend, function (event) {
-        if ((!window.navigator.msPointerEnabled && event.touches.length > 0) ||
-            event.targetTouches > 0) {
-            return; // Ignore if still touching with one or more fingers
+
+        // Ignore if still touching with one or more fingers
+        if (   (!window.navigator.msPointerEnabled && event.touches.length > 0)
+            || event.targetTouches > 0) {
+            return;
         }
 
         var touchEndClientX, touchEndClientY;
@@ -135,6 +138,7 @@ KeyboardInputManager.prototype.listen = function () {
         var dy = touchEndClientY - touchStartClientY;
         var absDy = Math.abs(dy);
 
+        // If their swipe went far enough, count it as a move in the appropriate direction
         if (Math.max(absDx, absDy) > 10) {
             // (right : left) : (down : up)
             self.emit("move", absDx > absDy ? (dx > 0 ? 1 : 3) : (dy > 0 ? 2 : 0));

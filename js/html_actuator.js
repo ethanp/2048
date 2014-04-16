@@ -21,8 +21,8 @@ function HTMLActuator() {
 }
 
 /**
- * TODO I'm not understanding:
- * when this function gets called these params aren't passed in!
+ * called from game_manager.js -> actuate() after each state-change
+ * updates on-screen score and grid and does animations
  */
 HTMLActuator.prototype.actuate = function (grid, metadata) {
 
