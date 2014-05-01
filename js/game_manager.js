@@ -63,9 +63,9 @@ GameManager.prototype.setup = function () {
     else {
         this.grid = new Grid(this.size); // create an empty Grid
         this.score = 0;
-        this.over = false;
-        this.won = false;
-        this.keepPlaying = false;  // TODO what's this for?
+        this.over = false;         // whether there are no moves available
+        this.won = false;          // whether player got to 2048 tile
+        this.keepPlaying = false;  // whether game continues after winning
 
         // Add the initial random 2 tiles
         this.addStartTiles();
